@@ -28,7 +28,7 @@ python3 fuzz.py
 Found endpoints will be printed to the terminal.
 
 
-⚠️ Legal Notice
+### ⚠️ Legal Notice
 
 This tool is for authorized testing only. Do not use it on targets you don’t have permission to test.
 Pentest responsibly.
