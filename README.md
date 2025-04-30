@@ -21,7 +21,7 @@ wordlist_file: str = 'wordlist.txt'
 
 2.	Run the script:
 ```
-python3 fuzzer.py
+python3 fuzz.py
 ```
 
 3.	Check the output:
