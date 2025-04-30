@@ -1,60 +1,29 @@
 from requests import get, Response
+from time import sleep
 
+def fuzz(url: str, wordlist_file: str) -> None:
+    counter = 0
+    with open(wordlist_file, 'r', errors='ignore') as wordlist:
+        for word in wordlist:
+            word: str = word.strip()
+            if not word:
+                continue
+            new_url: str = f'{url}/{word}'
+            try:
+                response: Response = get(new_url)
+                if response.status_code == 200:
+                    print(f'[+] Fuzzed URL: {new_url} - Status: {response.status_code}')
+            except Exception as e:
+                print(f'[-] Error fuzzing {new_url}: {str(e)}')
+                continue
 
-def fuzz(url: str):
+            counter += 1
+            sleep(1)
+            if counter % 100 == 0:
+                print(f'[!] Fuzzed {counter} URLs - Pausing for 5 seconds...')
+                sleep(5)
+                print('[*] Resuming fuzzing...')
 
-    interesting_word: list[str]=[
-        'admin',
-        'user',
-        'password',
-        'root',
-        'api',
-        'db',
-        'ftp',
-        'login',
-        'account',
-        'logout',
-        'reset',
-        'change',
-        'delete',
-        'edit',
-        'view',
-        'upload',
-        'download',
-        'backup',
-        'restore',
-        'update',
-        'upgrade',
-        'install',
-        'uninstall',
-        'remove',
-        'enable',
-        'disable',
-        'start',
-        'stop',
-        'restart',
-        'backup',
-        'restore',
-        'monitor',
-        'report',
-        'logs',
-        'debug',
-        'error',
-        'warning',
-        'critical',
-        'notice',
-        'info',
-        'success',
-        'fail',
-    ]
-    for word in interesting_word:
-        fuzzed_url: str = f"http://{url}/{word}"
-        try:
-            res: Response = get(fuzzed_url)
-            if res.status_code != 404:
-                print(f'Word found: {word} - URL: {fuzzed_url} - Status Code: {res.status_code} - Content Length: {len(res.text)}')
-        except Exception as e:
-            print(f'Error fuzzing {fuzzed_url}: {str(e)}')
-
-target: str = 'example.com'
-fuzz(target)
+url: str = 'http://x.x.x.x' # Replace with your target URL (https://example.com or http://example.com)
+wordlist_file: str = r'wordlists/path'
+fuzz(url, wordlist_file)
